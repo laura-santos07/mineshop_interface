@@ -29,12 +29,12 @@ def escolher_opcao():
 
     while opcao < 1 or opcao > 8:
         print('⚠ Erro: Escolha uma opção de 1 a 8.')
-        opcao = validar_itens('▷ Escolha uma opção: ') # Executa novamente a função validar_itens() e substitui o valor anterior da variável opcao
+        opcao = validar_itens('▷ Escolha uma opção: ')
 
     return opcao
 
 def validar_itens(mensagem):
-    while True: # Mantém a função até que a entrada seja válida
+    while True: # Repete a pergunta até receber um número válido
         try:
             valor = int(input(mensagem))
 
@@ -50,10 +50,10 @@ def validar_compra(mensagem):
     while True:
         resposta = input(mensagem).strip()
 
-        if resposta == 'Sim' or resposta == 'sim':
+        if resposta == 'Sim' or resposta == 'sim' or resposta == 'SIM':
             return True
 
-        elif resposta == 'Não' or resposta == 'não' or resposta == 'Nao' or resposta == 'nao':
+        elif resposta == 'Não' or resposta == 'não' or resposta == 'Nao' or resposta == 'nao' or resposta == 'NÃO' or resposta == 'NAO':
             return False
 
         else:
@@ -107,8 +107,7 @@ def adicionar_produto():
     print('━' * 60)
     print('▣ MINESHOP - ADICIONAR PRODUTO')
     print('━' * 60)
-    print('▷ Bem-vindo ao sistema de produtos!')
-    print('▷ Aqui serão exibidos os itens disponíveis.')
+    print('▷ Cadastro de produtos no inventário.')
     print('━' * 60)
 
 # TELA PARA REMOVER O PRODUTO
@@ -116,7 +115,7 @@ def remover_produto():
     print('━' * 60)
     print('▣ MINESHOP - REMOVER PRODUTO')
     print('━' * 60)
-    print('▷ Aqui você poderá remover produtos do inventário.')
+    print('▷ Remoção de produtos pelo ID.')
     print('━' * 60)
 
 # TELA PARA ATUALIZAR O PRODUTO
@@ -124,7 +123,7 @@ def atualizar_produto():
     print('━' * 60)
     print('▣ MINESHOP - ATUALIZAR PRODUTO')
     print('━' * 60)
-    print('▷ Aqui você poderá atualizar as informações dos produtos.')
+    print('▷ Alteração de nome, quantidade, preço ou origem do produto.')
     print('━' * 60)
 
 # TELA PARA BUSCAR O PRODUTO
@@ -132,7 +131,7 @@ def buscar_produto():
     print('━' * 60)
     print('▣ MINESHOP - BUSCAR PRODUTO')
     print('━' * 60)
-    print('▷ Aqui você poderá buscar produtos por nome ou ID.')
+    print('▷ Busca de produtos por nome ou ID.')
     print('━' * 60)
 
 # TELA PARA MOSTRAR OS PRODUTOS
@@ -140,7 +139,7 @@ def mostrar_produtos():
     print('━' * 60)
     print('▣ MINESHOP - MOSTRAR PRODUTOS')
     print('━' * 60)
-    print('▷ Aqui serão mostrados os produtos cadastrados.')
+    print('▷ Lista de produtos cadastrados.')
     print('━' * 60)
 
 # TELA PARA ESTATÍSTICAS
@@ -148,7 +147,7 @@ def mostrar_estatisticas():
     print('━' * 60)
     print('▣ MINESHOP - ESTATÍSTICAS')
     print('━' * 60)
-    print('▷ Aqui serão mostradas as informações do inventário.')
+    print('▷ Quantidade de produtos e valor total do inventário.')
     print('━' * 60)
 
 # TELA PARA ALTERAR LOGIN
@@ -156,7 +155,7 @@ def tela_alterar_login():
     print('━' * 60)
     print('▣ MINESHOP - ALTERAR LOGIN')
     print('━' * 60)
-    print('▷ Aqui você poderá alterar seus dados de acesso.')
+    print('▷ Alteração de usuário e senha.')
     print('━' * 60)
 
 # TELA PARA SALVAR E SAIR
@@ -164,5 +163,5 @@ def tela_sair():
     print('━' * 60)
     print('▣ MINESHOP - SALVAR E SAIR')
     print('━' * 60)
-    print('▷ As alterações serão salvas ao encerrar o sistema.')
+    print('▷ Encerramento do programa.')
     print('━' * 60)
