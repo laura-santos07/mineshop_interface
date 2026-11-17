@@ -53,13 +53,13 @@ def validar_compra(mensagem):
         if resposta == 'Sim' or resposta == 'sim':
             return True
 
-        elif resposta == 'Não' or resposta == 'não':
+        elif resposta == 'Não' or resposta == 'não' or resposta == 'Nao' or resposta == 'nao':
             return False
 
         else:
             print('⚠ Erro: Responda Sim ou Não.')
 
-def validar_decimal(mensagem): # Função >>do sistema<< que permite validar valores dos itens
+def validar_decimal(mensagem): # Valida os valores decimais dos produtos
     while True:
         try:
             valor = float(input(mensagem))
@@ -71,6 +71,24 @@ def validar_decimal(mensagem): # Função >>do sistema<< que permite validar val
 
         except ValueError:
             print('⚠ Erro: Insira um número válido.')
+
+def validar_nome(mensagem): # Impede que o nome do produto fique vazio
+    while True:
+        nome = input(mensagem)
+
+        if nome == '':
+            print('⚠ Erro: Digite o nome do produto.')
+        else:
+            return nome
+
+def validar_id(mensagem, inventario): # Confere se o ID já está sendo usado
+    while True:
+        codigo = validar_itens(mensagem)
+
+        if codigo in inventario:
+            print('⚠ Erro: Esse ID já está cadastrado.')
+        else:
+            return codigo
 
 # TELA PARA ADICIONAR O PRODUTO
 def adicionar_produto():
