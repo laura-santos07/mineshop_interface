@@ -107,32 +107,89 @@ def adicionar_produto():
     print('━' * 60)
     print('▣ MINESHOP - ADICIONAR PRODUTO')
     print('━' * 60)
-    print('▷ Cadastro de produtos no inventário.')
+
+    codigo = validar_itens('▷ ID do produto: ')
+    nome = validar_nome('▷ Nome do produto: ')
+    quantidade = validar_itens('▷ Quantidade: ')
+    preco = validar_decimal('▷ Preço: ')
+    importado = validar_importado('▷ Produto importado? (Sim/Não): ')
+
     print('━' * 60)
+    print('▷ Dados preenchidos. O cadastro será feito na integração.')
+    return [codigo, nome, quantidade, preco, importado]
+
 
 # TELA PARA REMOVER O PRODUTO
 def remover_produto():
     print('━' * 60)
     print('▣ MINESHOP - REMOVER PRODUTO')
     print('━' * 60)
-    print('▷ Remoção de produtos pelo ID.')
+
+    codigo = validar_itens('▷ ID do produto que deseja remover: ')
+    confirmar = validar_compra('▷ Confirmar remoção? (Sim/Não): ')
+
     print('━' * 60)
+    if confirmar:
+        print('▷ Pedido de remoção preenchido. Nenhum produto foi removido.')
+        return codigo
+    else:
+        print('▷ Remoção cancelada.')
+        return
+
 
 # TELA PARA ATUALIZAR O PRODUTO
 def atualizar_produto():
     print('━' * 60)
     print('▣ MINESHOP - ATUALIZAR PRODUTO')
     print('━' * 60)
-    print('▷ Alteração de nome, quantidade, preço ou origem do produto.')
+
+    codigo = validar_itens('▷ ID do produto que deseja atualizar: ')
+    print('▷ Nome (1)')
+    print('▷ Quantidade (2)')
+    print('▷ Preço (3)')
+    print('▷ Importado (4)')
+
+    campo = validar_itens('▷ O que deseja atualizar? ')
+    while campo < 1 or campo > 4:
+        print('⚠ Erro: Escolha uma opção de 1 a 4.')
+        campo = validar_itens('▷ O que deseja atualizar? ')
+
+    if campo == 1:
+        novo_valor = validar_nome('▷ Novo nome: ')
+    elif campo == 2:
+        novo_valor = validar_itens('▷ Nova quantidade: ')
+    elif campo == 3:
+        novo_valor = validar_decimal('▷ Novo preço: ')
+    else:
+        novo_valor = validar_importado('▷ Produto importado? (Sim/Não): ')
+
     print('━' * 60)
+    print('▷ Dados preenchidos. A atualização será feita na integração.')
+    return [codigo, campo, novo_valor]
+
 
 # TELA PARA BUSCAR O PRODUTO
 def buscar_produto():
     print('━' * 60)
     print('▣ MINESHOP - BUSCAR PRODUTO')
     print('━' * 60)
-    print('▷ Busca de produtos por nome ou ID.')
+    print('▷ Buscar por ID (1)')
+    print('▷ Buscar por nome (2)')
+
+    tipo = validar_itens('▷ Escolha uma opção: ')
+    while tipo < 1 or tipo > 2:
+        print('⚠ Erro: Escolha 1 ou 2.')
+        tipo = validar_itens('▷ Escolha uma opção: ')
+
+    if tipo == 1:
+        valor = validar_itens('▷ ID do produto: ')
+    else:
+        valor = validar_nome('▷ Nome do produto: ')
+
     print('━' * 60)
+    print('▷ Busca preenchida. A consulta será feita na integração.')
+    return [tipo, valor]
+
 
 # TELA PARA MOSTRAR OS PRODUTOS
 def mostrar_produtos():
