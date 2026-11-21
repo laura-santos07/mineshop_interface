@@ -103,12 +103,16 @@ def validar_importado(mensagem): # Recebe Sim ou Não para indicar se o item é 
     return validar_compra(mensagem)
 
 # TELA PARA ADICIONAR O PRODUTO
-def adicionar_produto():
+def adicionar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ADICIONAR PRODUTO')
     print('━' * 60)
 
-    codigo = validar_itens('▷ ID do produto: ')
+    if inventario is None:
+        codigo = validar_itens('▷ ID do produto: ')
+    else:
+        codigo = validar_id('▷ ID do produto: ', inventario)
+
     nome = validar_nome('▷ Nome do produto: ')
     quantidade = validar_itens('▷ Quantidade: ')
     preco = validar_decimal('▷ Preço: ')
@@ -120,12 +124,16 @@ def adicionar_produto():
 
 
 # TELA PARA REMOVER O PRODUTO
-def remover_produto():
+def remover_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - REMOVER PRODUTO')
     print('━' * 60)
 
-    codigo = validar_itens('▷ ID do produto que deseja remover: ')
+    if inventario is None:
+        codigo = validar_itens('▷ ID do produto que deseja remover: ')
+    else:
+        codigo = validar_id_existente('▷ ID do produto que deseja remover: ', inventario)
+
     confirmar = validar_compra('▷ Confirmar remoção? (Sim/Não): ')
 
     print('━' * 60)
@@ -138,12 +146,16 @@ def remover_produto():
 
 
 # TELA PARA ATUALIZAR O PRODUTO
-def atualizar_produto():
+def atualizar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ATUALIZAR PRODUTO')
     print('━' * 60)
 
-    codigo = validar_itens('▷ ID do produto que deseja atualizar: ')
+    if inventario is None:
+        codigo = validar_itens('▷ ID do produto que deseja atualizar: ')
+    else:
+        codigo = validar_id_existente('▷ ID do produto que deseja atualizar: ', inventario)
+
     print('▷ Nome (1)')
     print('▷ Quantidade (2)')
     print('▷ Preço (3)')
