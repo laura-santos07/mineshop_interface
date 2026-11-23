@@ -36,4 +36,3 @@ if criar_login():
 
         elif opcao == 8:
             tela_sair()
-            print('▷ O salvamento do inventário ainda não foi integrado.')
