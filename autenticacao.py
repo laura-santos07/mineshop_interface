@@ -40,7 +40,7 @@ def criar_login():
 
         else: # Se o login existir, os dados de acesso serão solicitados e autenticados
             print(barra_sup)
-            print(f"{lateral} Login já existe. Por favor, faça o login.".ljust(largura_caixa + 1) + lateral)
+            print(f"{lateral} Entre com o usuário e a senha cadastrados.".ljust(largura_caixa + 1) + lateral)
             print(barra_div)
             nome_usuario = str(input(f"{lateral} Digite seu nome de usuário ▸ "))
             senha_usuario = str(input(f"{lateral} Digite sua senha ▸ "))
@@ -70,7 +70,7 @@ def autenticar(nome, senha): # Verifica se o hash armazenado em login.txt é o m
         print(barra_inf)
         return True
     else:
-        print(f"{lateral} Acesso negado.".ljust(largura_caixa + 1) + lateral)
+        print(f"{lateral} Usuário ou senha incorretos. Tente novamente.".ljust(largura_caixa + 1) + lateral)
         print(barra_inf)
         return criar_login()
 
