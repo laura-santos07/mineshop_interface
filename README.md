@@ -4,9 +4,9 @@ Projeto de Programação II desenvolvido em Python, inspirado nas trocas com ald
 
 ## Funcionalidades
 
-O sistema contará com cadastro, remoção, atualização e busca de produtos, listagem do inventário, estatísticas e controle de acesso por login.
+O Villager administra o catálogo de produtos por login; o Jogador acessa a loja para consultar itens e, após a integração, comprar e trocar usando esmeraldas. O sistema também terá busca, ordenação, estatísticas e armazenamento cifrado do inventário.
 
-**Em desenvolvimento:** o menu e as telas estão preparados, mas as operações com produtos ainda precisam ser integradas.
+**Em desenvolvimento:** os menus dos dois perfis funcionam. O CRUD do inventário, as compras, as trocas, a busca real, a ordenação e o salvamento em CSV cifrado ainda dependem da integração dos módulos do grupo.
 
 ## Estrutura
 
@@ -24,7 +24,7 @@ Com o Python 3 instalado, execute na pasta do projeto:
 python main.py
 ```
 
-No primeiro acesso, o programa solicita a criação de um login.
+No início, escolha Villager (administrador) ou Jogador. No primeiro acesso como Villager, o programa solicita a criação de um login; o Jogador não precisa de login. O único login do arquivo `login.txt` pertence ao Villager.
 
 ## Desenvolvimento
 
