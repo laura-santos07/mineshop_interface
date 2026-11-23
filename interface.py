@@ -1,3 +1,73 @@
+# ESCOLHA DE PERFIL
+def menu_inicial():
+    print('━' * 60)
+    print('▣ BEM-VINDO AO MINESHOP')
+    print('━' * 60)
+    villager()
+    print('━' * 60)
+    print('▷ Entrar como Villager - Administrador (1)')
+    print('▷ Entrar como Jogador (2)')
+    print('▷ Sair (3)')
+    print('━' * 60)
+
+
+def escolher_perfil():
+    opcao = validar_itens('▷ Escolha uma opção: ')
+
+    while opcao < 1 or opcao > 3:
+        print('⚠ Erro: Escolha uma opção de 1 a 3.')
+        opcao = validar_itens('▷ Escolha uma opção: ')
+
+    return opcao
+
+
+# MENU DO JOGADOR
+def menu_jogador():
+    print('━' * 60)
+    print('▣ MINESHOP - JOGADOR')
+    print('━' * 60)
+    print('▷ Ver produtos da loja (1)')
+    print('▷ Comprar item com esmeraldas (2)')
+    print('▷ Trocar item por esmeraldas (3)')
+    print('▷ Meu inventário (4)')
+    print('▷ Buscar produto (5)')
+    print('▷ Voltar ao início (6)')
+    print('━' * 60)
+
+
+def escolher_opcao_jogador():
+    opcao = validar_itens('▷ Escolha uma opção: ')
+
+    while opcao < 1 or opcao > 6:
+        print('⚠ Erro: Escolha uma opção de 1 a 6.')
+        opcao = validar_itens('▷ Escolha uma opção: ')
+
+    return opcao
+
+
+def tela_comprar():
+    print('━' * 60)
+    print('▣ MINESHOP - COMPRAR ITEM')
+    print('━' * 60)
+    print('▷ As compras com esmeraldas serão ativadas na integração.')
+    print('▷ Nenhuma esmeralda ou produto foi alterado.')
+
+
+def tela_trocar():
+    print('━' * 60)
+    print('▣ MINESHOP - TROCAR ITEM')
+    print('━' * 60)
+    print('▷ As trocas com o Villager serão ativadas na integração.')
+    print('▷ Nenhuma esmeralda ou produto foi alterado.')
+
+
+def tela_inventario_jogador():
+    print('━' * 60)
+    print('▣ MINESHOP - MEU INVENTÁRIO')
+    print('━' * 60)
+    print('▷ O inventário do jogador será conectado na integração.')
+
+
 def menu():
     print('━' * 60)
     print('▣ MENU PRINCIPAL - MINESHOP')
