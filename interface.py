@@ -232,5 +232,6 @@ def tela_sair():
     print('━' * 60)
     print('▣ MINESHOP - SALVAR E SAIR')
     print('━' * 60)
-    print('▷ Encerramento do programa.')
+    print('▷ Atenção: o salvamento dos produtos ainda não foi integrado.')
+    print('▷ Encerrando o programa sem salvar o inventário.')
     print('━' * 60)
