@@ -13,7 +13,7 @@ def buscar_por_id(inventario, id):
 def busca_linear_nome(inventario, valor):
     for id_produto in inventario:
         if valor.lower() == inventario[id_produto][0].lower():
-            return inventario[id_produto]
+            return [id_produto] + inventario[id_produto]
     else:
         return None
 
