@@ -13,8 +13,8 @@ O Villager administra o catálogo de produtos por login; o Jogador acessa a loja
 - `main.py` — início do programa e acesso ao menu.
 - `interface.py` — telas e validações de entrada.
 - `autenticacao.py` — cadastro, login e alteração de credenciais.
-- `inventario.py` — reservado para o gerenciamento do inventário.
-- `login.py` — arquivo ainda não implementado.
+- `inventario.csv` — arquivo de dados do inventário, inicialmente vazio; a leitura e a gravação cifrada ainda serão integradas.
+- `busca_e_ordenação.py` — algoritmos de busca e ordenação, ainda pendentes de integração ao programa.
 
 ## Como executar
 
