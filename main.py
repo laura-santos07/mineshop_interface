@@ -36,7 +36,7 @@ def executar():
         perfil = escolher_perfil()
 
         if perfil == 1:
-            # O único login pertence ao Villager.
+            # Login único para ambos os perfis
             if criar_login():
                 if inventario is None:
                     inventario = inv.carregar_inventario()
@@ -45,7 +45,7 @@ def executar():
                 opcao = 0
 
                 while opcao != 8:
-                    # A opção 0 volta à seleção de perfil sem salvar ainda.
+                    # A opção 0 volta à seleção de perfil sem salvar ainda
                     menu()
                     opcao = escolher_opcao()
 
@@ -113,7 +113,7 @@ def executar():
                         input('Pressione ENTER para voltar ao menu...')
 
         elif perfil == 2:
-            # O jogador não recebe acesso à edição de produtos.
+            # O jogador não recebe acesso à edição de produtos
             if inventario is None:
                 inventario = inv.carregar_inventario()
                 if inventario is None:
@@ -202,7 +202,7 @@ def executar():
                 if opcao_jogador not in [1, 4, 8, 9]:
                     input('Pressione ENTER para voltar ao menu...')
 
-    # As alterações são gravadas somente ao encerrar o programa.
+    # As alterações são gravadas somente ao encerrar o programa
     try:
         if inventario is not None:
             inv.salvar_inventario(inventario)
