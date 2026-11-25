@@ -19,42 +19,84 @@ barra_inf = inf_esquerdo + linha + inf_direito
 barra_div = "┣" + linha + "┫"
 lateral   = "┃"
 
-def criar_login():
-    # Cadastro inicial: executado apenas se o arquivo nao existir ou estiver vazio.
+def solicitar_credencial(mensagem):
+    while True:
+        valor = input(mensagem)
+        if valor.strip().lower() == 'v':
+            return None
+        if valor.strip():
+            return valor
+        print('▷ O campo não pode ficar vazio.')
+
+
+def gravar_login(nome, senha):
+    hash_nome, hash_senha = gerar_hash(nome, senha)
+    # Só grava depois de preencher e confirmar todos os dados.
     try:
-        with open(login, "r", encoding="utf-8") as arquivo:
+        with open(login, 'w', encoding='utf-8') as arquivo:
+            arquivo.write(f'{hash_nome};{hash_senha}\n')
+    except OSError as erro:
+        print(f'▷ Não foi possível salvar o login: {erro}')
+        return False
+    return True
+
+
+def novos_dados():
+    print('▷ Digite V para voltar sem alterar as credenciais.')
+    nome = solicitar_credencial(f"{lateral} Crie o nome de usuário ▸ ")
+    if nome is None:
+        return None
+    senha = solicitar_credencial(f"{lateral} Crie a senha ▸ ")
+    if senha is None:
+        return None
+    confirmar = input('▷ Confirmar novas credenciais? (S/N): ').strip().lower()
+    if confirmar != 's' and confirmar != 'sim':
+        return None
+    return nome, senha
+
+
+def criar_login():
+    try:
+        with open(login, 'r', encoding='utf-8') as arquivo:
             linhas = arquivo.read().strip()
     except FileNotFoundError:
-        linhas = ""
-
-    if linhas == "":
-        print(barra_sup)
-        print(f"{lateral} Crie seu login e senha para acessar o sistema.".ljust(largura_caixa + 1) + lateral)
-        print(barra_div)
-        nome_usuario = str(input(f"{lateral} Crie o nome de usuário ▸ "))
-        senha_usuario = str(input(f"{lateral} Crie a senha ▸ "))
-        hash_nome, hash_senha = gerar_hash(nome_usuario, senha_usuario)
-
-        with open(login, "w", encoding="utf-8") as arquivo:
-            arquivo.write(f"{hash_nome};{hash_senha}\n")
-
-        print(barra_div)
-        print(f"{lateral} Conta criada com sucesso!".ljust(largura_caixa + 1) + lateral)
-        print(barra_inf)
-        print('▷ Agora entre com o usuário e a senha que acabou de cadastrar.')
-
-    # Mesmo no primeiro acesso, exige login antes de abrir o menu do Villager.
+        linhas = ''
+    except (OSError, ValueError) as erro:
+        print(f'▷ Erro ao ler login.txt: {erro}')
+        return False
+    if linhas == '':
+        print('▷ Crie seu login e senha para acessar o sistema.')
+        dados = novos_dados()
+        if dados is None or not gravar_login(dados[0], dados[1]):
+            return False
+        print('▷ Conta criada. Agora entre com as novas credenciais.')
+    else:
+        dados = linhas.split(';')
+        if len(dados) != 2 or len(dados[0]) != 64 or len(dados[1]) != 64:
+            print('▷ login.txt inválido. Verifique o arquivo antes de continuar.')
+            return False
+        for valor in dados:
+            for caractere in valor:
+                if caractere not in '0123456789abcdef':
+                    print('▷ login.txt inválido. Verifique o arquivo antes de continuar.')
+                    return False
     while True:
         print(barra_sup)
-        print(f"{lateral} Login do Villager - Administrador".ljust(largura_caixa + 1) + lateral)
+        print('▷ Login do Villager - Administrador (V para voltar)')
         print(barra_div)
-        nome_usuario = str(input(f"{lateral} Digite seu nome de usuário ▸ "))
-        senha_usuario = str(input(f"{lateral} Digite sua senha ▸ "))
+        nome_usuario = solicitar_credencial(f"{lateral} Digite seu nome de usuário ▸ ")
+        if nome_usuario is None:
+            return False
+        senha_usuario = solicitar_credencial(f"{lateral} Digite sua senha ▸ ")
+        if senha_usuario is None:
+            return False
         print(barra_inf)
-
-        if autenticar(nome_usuario, senha_usuario):
-            return True
-
+        try:
+            if autenticar(nome_usuario, senha_usuario):
+                return True
+        except (OSError, ValueError) as erro:
+            print(f'▷ Erro ao autenticar: {erro}')
+            return False
         print('▷ Usuário ou senha incorretos. Tente novamente.')
 
 
@@ -79,16 +121,11 @@ def autenticar(nome, senha):
     return False
 
 
-def alterar_login(): # Sobrescreve o arquivo com os novos dados de login
-    with open(login, "w", encoding="utf-8") as arquivo:
-        print(barra_sup)
-        print(f"{lateral} Altere seu login.".ljust(largura_caixa + 1) + lateral)
-        print(barra_div)
-        nome_usuario = str(input(f"{lateral} Crie o nome de usuário ▸ "))
-        senha_usuario = str(input(f"{lateral} Crie a senha ▸ "))
-        print(barra_inf)
-        hash_nome, hash_senha = gerar_hash(nome_usuario, senha_usuario)
-        arquivo.write(f"{hash_nome};{hash_senha}\n")
+def alterar_login():
+    dados = novos_dados()
+    if dados is None:
+        return False
+    return gravar_login(dados[0], dados[1])
 
 
 def gerar_hash(nome, senha): #gera hashs

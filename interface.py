@@ -28,18 +28,21 @@ def menu_jogador():
     print('━' * 60)
     print('▷ Ver produtos da loja (1)')
     print('▷ Comprar item com esmeraldas (2)')
-    print('▷ Trocar item por esmeraldas (3)')
+    print('▷ Vender item por esmeraldas (3)')
     print('▷ Meu inventário (4)')
-    print('▷ Buscar produto (5)')
-    print('▷ Voltar ao início (6)')
+    print('▷ Coletar item para meu inventário (5)')
+    print('▷ Remover item do meu inventário (6)')
+    print('▷ Definir quantidade disponível para venda (7)')
+    print('▷ Buscar produto (8)')
+    print('▷ Voltar ao início (9)')
     print('━' * 60)
 
 
 def escolher_opcao_jogador():
     opcao = validar_itens('▷ Escolha uma opção: ')
 
-    while opcao < 1 or opcao > 6:
-        print('⚠ Erro: Escolha uma opção de 1 a 6.')
+    while opcao < 1 or opcao > 9:
+        print('⚠ Erro: Escolha uma opção de 1 a 9.')
         opcao = validar_itens('▷ Escolha uma opção: ')
 
     return opcao
@@ -48,24 +51,35 @@ def escolher_opcao_jogador():
 def tela_comprar():
     print('━' * 60)
     print('▣ MINESHOP - COMPRAR ITEM')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
-    print('▷ As compras com esmeraldas serão ativadas na integração.')
-    print('▷ Nenhuma esmeralda ou produto foi alterado.')
+    codigo = validar_itens('▷ ID do produto: ', True)
+    if codigo is None:
+        return None
+    quantidade = validar_itens('▷ Quantidade: ', True)
+    if quantidade is None:
+        return None
+    return codigo, quantidade
 
 
-def tela_trocar():
+def tela_vender():
     print('━' * 60)
-    print('▣ MINESHOP - TROCAR ITEM')
+    print('▣ MINESHOP - VENDER ITEM')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
-    print('▷ As trocas com o Villager serão ativadas na integração.')
-    print('▷ Nenhuma esmeralda ou produto foi alterado.')
+    codigo = validar_itens('▷ ID do seu item: ', True)
+    if codigo is None:
+        return None
+    quantidade = validar_itens('▷ Quantidade: ', True)
+    if quantidade is None:
+        return None
+    return codigo, quantidade
 
 
 def tela_inventario_jogador():
     print('━' * 60)
     print('▣ MINESHOP - MEU INVENTÁRIO')
     print('━' * 60)
-    print('▷ O inventário do jogador será conectado na integração.')
 
 
 def menu():
@@ -82,6 +96,7 @@ def menu():
     print('▷ Estatísticas (6)')
     print('▷ Alterar login (7)')
     print('▷ Salvar e sair (8)')
+    print('▷ Voltar ao início (0)')
     print('━' * 60)
 
 def villager():
@@ -97,16 +112,19 @@ def villager():
 def escolher_opcao():
     opcao = validar_itens('▷ Escolha uma opção: ')
 
-    while opcao < 1 or opcao > 8:
-        print('⚠ Erro: Escolha uma opção de 1 a 8.')
+    while opcao < 0 or opcao > 8:
+        print('⚠ Erro: Escolha uma opção de 0 a 8.')
         opcao = validar_itens('▷ Escolha uma opção: ')
 
     return opcao
 
-def validar_itens(mensagem):
+def validar_itens(mensagem, voltar=False):
     while True: # Repete a pergunta até receber um número válido
         try:
-            valor = int(input(mensagem))
+            resposta = input(mensagem).strip()
+            if voltar and resposta.lower() == 'v':
+                return None
+            valor = int(resposta)
 
             if valor < 0:
                 print('⚠ Erro: Insira um número não negativo.')
@@ -116,9 +134,11 @@ def validar_itens(mensagem):
         except ValueError:
             print('⚠ Erro: Insira um número inteiro válido.')
 
-def validar_compra(mensagem):
+def validar_compra(mensagem, voltar=False):
     while True:
         resposta = input(mensagem).strip()
+        if voltar and resposta.lower() == 'v':
+            return None
 
         if resposta == 'Sim' or resposta == 'sim' or resposta == 'SIM':
             return True
@@ -129,31 +149,40 @@ def validar_compra(mensagem):
         else:
             print('⚠ Erro: Responda Sim ou Não.')
 
-def validar_decimal(mensagem): # Valida os valores decimais dos produtos
+def validar_decimal(mensagem, voltar=False): # Valida os valores decimais dos produtos
     while True:
         try:
-            valor = float(input(mensagem))
+            resposta = input(mensagem).strip()
+            if voltar and resposta.lower() == 'v':
+                return None
+            valor = float(resposta)
 
-            if valor < 0 or valor != valor or valor == float('inf') or valor == float('-inf'):
+            if not 0 <= valor < float('inf'):
                 print('⚠ Erro: Insira um valor válido e não negativo.')
             else:
-                return valor
+                return round(valor, 2)
 
         except ValueError:
             print('⚠ Erro: Insira um número válido.')
 
-def validar_nome(mensagem): # Impede que o nome do produto fique vazio
+def validar_nome(mensagem, voltar=False): # Impede que o nome do produto fique vazio
     while True:
         nome = input(mensagem).strip()
+        if voltar and nome.lower() == 'v':
+            return None
 
         if nome == '':
             print('⚠ Erro: Digite o nome do produto.')
+        elif ';' in nome:
+            print('⚠ Erro: O nome não pode conter ponto e vírgula.')
         else:
             return nome
 
 def validar_id(mensagem, inventario): # Confere se o ID já está sendo usado
     while True:
-        codigo = validar_itens(mensagem)
+        codigo = validar_itens(mensagem, True)
+        if codigo is None:
+            return None
 
         if codigo in inventario:
             print('⚠ Erro: Esse ID já está cadastrado.')
@@ -162,53 +191,99 @@ def validar_id(mensagem, inventario): # Confere se o ID já está sendo usado
 
 def validar_id_existente(mensagem, inventario): # Confere se o produto existe antes de alterar ou remover
     while True:
-        codigo = validar_itens(mensagem)
+        codigo = validar_itens(mensagem, True)
+        if codigo is None:
+            return None
 
         if codigo in inventario:
             return codigo
         else:
             print('⚠ Erro: Produto não encontrado.')
 
-def validar_importado(mensagem): # Recebe Sim ou Não para indicar se o item é importado
-    return validar_compra(mensagem)
+def escolher_encantamento():
+    encantamentos = ['Afiação', 'Proteção', 'Eficiência', 'Inquebrável',
+                     'Remendo', 'Fortuna', 'Toque suave', 'Pilhagem',
+                     'Aspecto flamejante', 'Repulsão', 'Força', 'Chama',
+                     'Infinidade', 'Queda suave', 'Espinhos', 'Respiração']
+    print('━' * 60)
+    print('▣ MINESHOP - ENCANTAMENTOS')
+    print('▷ Digite V para voltar sem concluir a operação.')
+    print('━' * 60)
+    for i in range(len(encantamentos)):
+        print(f'▷ {encantamentos[i]} ({i + 1})')
+    opcao = validar_itens('▷ Escolha o encantamento: ', True)
+    if opcao is None:
+        return None
+    while opcao < 1 or opcao > len(encantamentos):
+        print('⚠ Erro: Escolha uma opção válida.')
+        opcao = validar_itens('▷ Escolha o encantamento: ', True)
+        if opcao is None:
+            return None
+    return encantamentos[opcao - 1]
+
 
 # TELA PARA ADICIONAR O PRODUTO
 def adicionar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ADICIONAR PRODUTO')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
 
     if inventario is None:
-        codigo = validar_itens('▷ ID do produto: ')
+        codigo = validar_itens('▷ ID do produto: ', True)
+        if codigo is None:
+            return None
     else:
         codigo = validar_id('▷ ID do produto: ', inventario)
+        if codigo is None:
+            return None
 
-    nome = validar_nome('▷ Nome do produto: ')
-    quantidade = validar_itens('▷ Quantidade: ')
-    preco = validar_decimal('▷ Preço: ')
-    importado = validar_importado('▷ Produto importado? (Sim/Não): ')
+    nome = validar_nome('▷ Nome do produto: ', True)
+    if nome is None:
+        return None
+    quantidade = validar_itens('▷ Quantidade: ', True)
+    if quantidade is None:
+        return None
+    preco = validar_decimal('▷ Preço: ', True)
+    if preco is None:
+        return None
+    encantado = validar_compra('▷ Produto encantado? (Sim/Não): ', True)
+    if encantado is None:
+        return None
+    encantamento = ''
+    if encantado:
+        encantamento = escolher_encantamento()
+        if encantamento is None:
+            return None
 
     print('━' * 60)
-    print('▷ Dados preenchidos. O cadastro será feito na integração.')
-    return [codigo, nome, quantidade, preco, importado]
+    print('▷ Dados do produto preenchidos.')
+    return [codigo, nome, quantidade, preco, encantado, encantamento]
 
 
 # TELA PARA REMOVER O PRODUTO
 def remover_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - REMOVER PRODUTO')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
 
     if inventario is None:
-        codigo = validar_itens('▷ ID do produto que deseja remover: ')
+        codigo = validar_itens('▷ ID do produto que deseja remover: ', True)
+        if codigo is None:
+            return None
     else:
         codigo = validar_id_existente('▷ ID do produto que deseja remover: ', inventario)
+        if codigo is None:
+            return None
 
-    confirmar = validar_compra('▷ Confirmar remoção? (Sim/Não): ')
+    confirmar = validar_compra('▷ Confirmar remoção? (Sim/Não): ', True)
+    if confirmar is None:
+        return None
 
     print('━' * 60)
     if confirmar:
-        print('▷ Pedido de remoção preenchido. Nenhum produto foi removido.')
+        print('▷ Remoção confirmada.')
         return codigo
     else:
         print('▷ Remoção cancelada.')
@@ -219,34 +294,57 @@ def remover_produto(inventario=None):
 def atualizar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ATUALIZAR PRODUTO')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
 
     if inventario is None:
-        codigo = validar_itens('▷ ID do produto que deseja atualizar: ')
+        codigo = validar_itens('▷ ID do produto que deseja atualizar: ', True)
+        if codigo is None:
+            return None
     else:
         codigo = validar_id_existente('▷ ID do produto que deseja atualizar: ', inventario)
+        if codigo is None:
+            return None
 
     print('▷ Nome (1)')
     print('▷ Quantidade (2)')
     print('▷ Preço (3)')
-    print('▷ Importado (4)')
+    print('▷ Encantado / encantamento (4)')
 
-    campo = validar_itens('▷ O que deseja atualizar? ')
+    campo = validar_itens('▷ O que deseja atualizar? ', True)
+    if campo is None:
+        return None
     while campo < 1 or campo > 4:
         print('⚠ Erro: Escolha uma opção de 1 a 4.')
-        campo = validar_itens('▷ O que deseja atualizar? ')
+        campo = validar_itens('▷ O que deseja atualizar? ', True)
+        if campo is None:
+            return None
 
     if campo == 1:
-        novo_valor = validar_nome('▷ Novo nome: ')
+        novo_valor = validar_nome('▷ Novo nome: ', True)
+        if novo_valor is None:
+            return None
     elif campo == 2:
-        novo_valor = validar_itens('▷ Nova quantidade: ')
+        novo_valor = validar_itens('▷ Nova quantidade: ', True)
+        if novo_valor is None:
+            return None
     elif campo == 3:
-        novo_valor = validar_decimal('▷ Novo preço: ')
+        novo_valor = validar_decimal('▷ Novo preço: ', True)
+        if novo_valor is None:
+            return None
     else:
-        novo_valor = validar_importado('▷ Produto importado? (Sim/Não): ')
+        novo_valor = validar_compra('▷ Produto encantado? (Sim/Não): ', True)
+        if novo_valor is None:
+            return None
+        encantamento = ''
+        if novo_valor:
+            encantamento = escolher_encantamento()
+            if encantamento is None:
+                return None
+        return [codigo, campo, novo_valor, encantamento]
 
     print('━' * 60)
-    print('▷ Dados preenchidos. A atualização será feita na integração.')
+    print('▷ Dados da atualização preenchidos.')
     return [codigo, campo, novo_valor]
 
 
@@ -254,22 +352,32 @@ def atualizar_produto(inventario=None):
 def buscar_produto():
     print('━' * 60)
     print('▣ MINESHOP - BUSCAR PRODUTO')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
     print('▷ Buscar por ID (1)')
-    print('▷ Buscar por nome (2)')
+    print('▷ Buscar por nome exato (2)')
+    print('▷ Buscar por parte do nome (3)')
 
-    tipo = validar_itens('▷ Escolha uma opção: ')
-    while tipo < 1 or tipo > 2:
-        print('⚠ Erro: Escolha 1 ou 2.')
-        tipo = validar_itens('▷ Escolha uma opção: ')
+    tipo = validar_itens('▷ Escolha uma opção: ', True)
+    if tipo is None:
+        return None
+    while tipo < 1 or tipo > 3:
+        print('⚠ Erro: Escolha 1, 2 ou 3.')
+        tipo = validar_itens('▷ Escolha uma opção: ', True)
+        if tipo is None:
+            return None
 
     if tipo == 1:
-        valor = validar_itens('▷ ID do produto: ')
+        valor = validar_itens('▷ ID do produto: ', True)
+        if valor is None:
+            return None
     else:
-        valor = validar_nome('▷ Nome do produto: ')
+        valor = validar_nome('▷ Nome do produto: ', True)
+        if valor is None:
+            return None
 
     print('━' * 60)
-    print('▷ Busca preenchida. A consulta será feita na integração.')
+    print('▷ Dados da busca preenchidos.')
     return [tipo, valor]
 
 
@@ -298,10 +406,61 @@ def tela_alterar_login():
     print('━' * 60)
 
 # TELA PARA SALVAR E SAIR
-def tela_sair():
+def tela_coletar():
     print('━' * 60)
-    print('▣ MINESHOP - SALVAR E SAIR')
+    print('▣ MINESHOP - COLETAR ITEM')
+    print('▷ Digite V para voltar sem concluir a operação.')
     print('━' * 60)
-    print('▷ Atenção: o salvamento dos produtos ainda não foi integrado.')
-    print('▷ Encerrando o programa sem salvar o inventário.')
+    nome = validar_nome('▷ Nome do novo item: ', True)
+    if nome is None:
+        return None
+    while ';' in nome:
+        print('⚠ Erro: O nome não pode conter ponto e vírgula.')
+        nome = validar_nome('▷ Nome do novo item: ', True)
+        if nome is None:
+            return None
+    quantidade = validar_itens('▷ Quantidade: ', True)
+    if quantidade is None:
+        return None
+    while quantidade == 0:
+        print('⚠ Erro: Informe uma quantidade maior que zero.')
+        quantidade = validar_itens('▷ Quantidade: ', True)
+        if quantidade is None:
+            return None
+    encantado = validar_compra('▷ Item encantado? (Sim/Não): ', True)
+    if encantado is None:
+        return None
+    encantamento = ''
+    if encantado:
+        encantamento = escolher_encantamento()
+        if encantamento is None:
+            return None
+    return [nome, quantidade, encantado, encantamento]
+
+
+def tela_remover_item():
     print('━' * 60)
+    print('▣ MINESHOP - REMOVER ITEM DO INVENTÁRIO')
+    print('▷ Digite V para voltar sem concluir a operação.')
+    codigo = validar_itens('▷ ID do seu item: ', True)
+    if codigo is None:
+        return None
+    quantidade = validar_itens('▷ Quantidade para remover: ', True)
+    if quantidade is None:
+        return None
+    confirmar = validar_compra('▷ Confirmar descarte? (Sim/Não): ', True)
+    if confirmar:
+        return codigo, quantidade
+    return None
+
+
+def tela_disponibilidade():
+    print('▣ MINESHOP - QUANTIDADE DISPONÍVEL PARA VENDA')
+    print('▷ Digite V para voltar. Zero reserva todas as unidades.')
+    codigo = validar_itens('▷ ID do seu item: ', True)
+    if codigo is None:
+        return None
+    quantidade = validar_itens('▷ Quantidade disponível para venda: ', True)
+    if quantidade is None:
+        return None
+    return codigo, quantidade
