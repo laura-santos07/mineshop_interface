@@ -11,6 +11,7 @@ python3 main.py
 ```
 
 No Windows, use `python main.py` ou `py main.py`.
+Ao iniciar, o sistema solicita um único login antes da escolha entre Villager e Jogador.
 Não é necessário instalar bibliotecas externas. O módulo de autenticação mantém
 hashlib e os, que já estavam no código original do grupo.
 
@@ -20,7 +21,8 @@ hashlib e os, que já estavam no código original do grupo.
 - interface.py: menus e validação dos dados digitados.
 - inventario.py: CRUD, compra, venda, coleta, descarte e leitura/gravação.
 - busca_e_ordenacao.py: busca por ID, busca linear e binária, Selection Sort e Merge Sort.
-- autenticacao.py: cadastro, login e alteração de credenciais.
+- autenticacao.py: cadastro, login único para ambos os perfis e alteração de credenciais.
+- criptografia.py: Cifra de César utilizada nos campos dos arquivos de inventário.
 - inventario.csv: estoque do Villager.
 - inventario_jogador.csv: inventário pessoal.
 - esmeraldas.txt: saldo do jogador.
@@ -54,6 +56,7 @@ nas telas que oferecem essa opção.
 Cada produto é armazenado em um dicionário cuja chave é o ID inteiro e cujo
 valor é uma lista: [nome, quantidade, preço, encantado, encantamento].
 O CSV tem seis campos separados por ponto e vírgula, sem cabeçalho.
+Os campos do inventário são cifrados por Cifra de César ao salvar e decifrados ao carregar.
 Os inventários, o saldo e a disponibilidade são gravados apenas no encerramento
 normal do programa. A alteração de login é gravada no momento da confirmação.
 
@@ -69,35 +72,5 @@ Foram priorizados listas, dicionários, funções, condicionais, repetições,
 recursão, busca, ordenação, manipulação de arquivos e try/except. A adaptação
 do campo Importado para Encantado e o campo adicional de encantamento devem
 ser confirmados com o professor. A autenticação é demonstrativa, não de produção.
-Não há criptografia nos CSVs. A coleta livre e os encantamentos sem restrições
-por item foram mantidos conforme solicitado.
-
-
-
-
-
-
-
-
-Mineshop
-Projeto de Programação II desenvolvido em Python, inspirado nas trocas com aldeões do Minecraft. A proposta é criar um sistema de gerenciamento de inventário pelo terminal.
-
-Funcionalidades
-O Villager administra o catálogo de produtos por login; o Jogador acessa a loja para consultar itens e, após a integração, comprar e trocar usando esmeraldas. O sistema também terá busca, ordenação, estatísticas e armazenamento cifrado do inventário.
-
-Em desenvolvimento: os menus dos dois perfis funcionam. O CRUD do inventário, as compras, as trocas, a busca real, a ordenação e o salvamento em CSV cifrado ainda dependem da integração dos módulos do grupo.
-
-Estrutura
-main.py — início do programa e acesso ao menu.
-interface.py — telas e validações de entrada.
-autenticacao.py — cadastro, login e alteração de credenciais.
-inventario.csv — arquivo de dados do inventário, inicialmente vazio; a leitura e a gravação cifrada ainda serão integradas.
-busca_e_ordenação.py — algoritmos de busca e ordenação, ainda pendentes de integração ao programa.
-Como executar
-Com o Python 3 instalado, execute na pasta do projeto:
-
-python main.py
-No início, escolha Villager (administrador) ou Jogador. No primeiro acesso como Villager, o programa solicita a criação de um login; o Jogador não precisa de login. O único login do arquivo login.txt pertence ao Villager.
-
-Desenvolvimento
-O projeto está sendo feito em grupo. A interface e as validações estão em andamento, enquanto as funcionalidades dos demais módulos serão integradas ao longo do desenvolvimento.
+Os arquivos inventario.csv e inventario_jogador.csv usam Cifra de César.
+A coleta livre e os encantamentos sem restrições por item foram mantidos conforme solicitado.
