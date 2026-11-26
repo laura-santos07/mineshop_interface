@@ -1,5 +1,6 @@
 # ------- busca por ID --------
 
+# Como o ID é a chave do dicionário, a consulta pode ser feita diretamente.
 def buscar_por_id(inventario, id):
 
     if id in inventario:
@@ -10,6 +11,7 @@ def buscar_por_id(inventario, id):
 # ------ busca linear por nome --------
 
 # busca linear por nome --------
+# Percorre os produtos e aceita tanto nomes exatos quanto buscas por parte do nome.
 def busca_linear_nome(inventario, valor, parcial=False):
     resultados = []
     for codigo in inventario:
@@ -21,12 +23,14 @@ def busca_linear_nome(inventario, valor, parcial=False):
 
 # ------- busca por nome --------
 
+# Auxilia a ordenação trocando dois elementos de posição.
 def troca(L, i, j):
     auxiliar = L[i]
     L[i] = L[j]
     L[j] = auxiliar
 
 
+# Localiza o maior nome da parte ainda não ordenada.
 def seleciona(L, n):
     m = 0
     for i in range(1, n):
@@ -35,6 +39,7 @@ def seleciona(L, n):
     return m
 
 
+# O Selection Sort é usado em listas menores pela simplicidade de implementação.
 def selection_sort(L):
     n = len(L)  # Define o tamanho da parte não ordenada da lista.
     while n > 1:
@@ -43,6 +48,7 @@ def selection_sort(L):
         n -= 1  # Diminui o tamanho da parte não ordenada, pois o último elemento já está na posição correta.
 
 
+# Com a lista ordenada, descarta metade do intervalo a cada comparação.
 def busca_binaria(Lista, x):
     x = x.lower()
     inicial = 0
@@ -90,6 +96,7 @@ def intercala(esquerda, direita):
     return resultado
 
 
+# Para listas maiores, a divisão em metades reduz o custo da ordenação em relação ao Selection Sort.
 def merge_sort(lista):
     # Caso base: uma lista com zero ou um elemento já está ordenada.
     if len(lista) <= 1:
@@ -105,6 +112,7 @@ def merge_sort(lista):
 
 
 
+# Transforma o dicionário em lista e escolhe o algoritmo pelo limite de 100 produtos.
 def ordenar_produtos(inventario):
     lista = []
     for codigo in inventario:
@@ -116,6 +124,7 @@ def ordenar_produtos(inventario):
     return lista
 
 
+# A busca por ID é direta; nomes parciais usam busca linear e nomes exatos podem usar busca binária.
 def buscar(inventario, tipo, valor):
     if tipo == 1:
         produto = buscar_por_id(inventario, valor)
