@@ -41,6 +41,8 @@ hashlib e os, que já estavam no código original do grupo.
 8. Buscar produto
 9. Voltar ao início
 
+Itens adquiridos ou coletados começam com zero unidades disponíveis para venda.
+A quantidade oferecida é definida pelo Jogador na opção 7.
 A coleta é livre. Somente itens com oferta correspondente no Villager podem ser
 vendidos, pelo preço vigente da loja. A venda aumenta o estoque do Villager.
 O descarte não gera esmeraldas. A opção 7 não altera a quantidade total.
@@ -56,12 +58,13 @@ nas telas que oferecem essa opção.
 Cada produto é armazenado em um dicionário cuja chave é o ID inteiro e cujo
 valor é uma lista: [nome, quantidade, preço, encantado, encantamento].
 O CSV tem seis campos separados por ponto e vírgula, sem cabeçalho.
-Os campos do inventário são cifrados por Cifra de César ao salvar e decifrados ao carregar.
+Os campos do inventário são cifrados por Cifra de César, inclusive números,
+ao salvar e decifrados ao carregar. A chave utilizada é 7.
 Os inventários, o saldo e a disponibilidade são gravados apenas no encerramento
 normal do programa. A alteração de login é gravada no momento da confirmação.
 
-Se um arquivo de dados estiver ausente ou inválido, o programa informa o erro e
-interrompe a sessão sem gravar. Não há criação automática de inventário vazio.
+Se inventario.csv estiver ausente, o sistema oferece criar um inventário vazio.
+Outros arquivos de dados ausentes ou inválidos são informados antes de interromper a sessão.
 O salvamento usa open, for e write; não cria backups ou arquivos temporários.
 Em caso de erro de escrita, alguns arquivos podem ter sido atualizados.
 Execute sempre a partir da pasta do projeto.
