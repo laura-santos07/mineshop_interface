@@ -31,86 +31,88 @@ def executar():
     esmeraldas = None
     disponibilidade = None
 
+    # Login único para ambos os perfis
+    if not criar_login():
+        return
+
     while perfil != 3:
         menu_inicial()
         perfil = escolher_perfil()
 
         if perfil == 1:
-            # Login único para ambos os perfis
-            if criar_login():
+            if inventario is None:
+                inventario = inv.carregar_inventario()
                 if inventario is None:
-                    inventario = inv.carregar_inventario()
-                    if inventario is None:
-                        return
-                opcao = 0
+                    return
+            opcao = 0
 
-                while opcao != 8:
-                    # A opção 0 volta à seleção de perfil sem salvar ainda
-                    menu()
-                    opcao = escolher_opcao()
+            while opcao != 8:
+                # A opção 0 volta à seleção de perfil sem salvar ainda
+                menu()
+                opcao = escolher_opcao()
 
-                    if opcao == 0:
-                        break
+                if opcao == 0:
+                    break
 
-                    elif opcao == 1:
-                        dados = adicionar_produto(inventario)
+                elif opcao == 1:
+                    dados = adicionar_produto(inventario)
+                    if dados is None:
+                        continue
+                    if ';' in dados[1]:
+                        print('▷ O nome não pode conter ponto e vírgula.')
+                    elif inv.adicionar_produto(inventario, dados):
+                        print('▷ Produto cadastrado com sucesso!')
+                    else:
+                        print('▷ ID ou produto com mesmo nome e encantamento já cadastrado.')
+
+                elif opcao == 2:
+                    if len(inventario) == 0:
+                        print('▷ Nenhum produto cadastrado.')
+                    else:
+                        codigo = remover_produto(inventario)
+                        if codigo is not None:
+                            if inv.remover_produto(inventario, codigo):
+                                print('▷ Produto removido com sucesso!')
+
+                elif opcao == 3:
+                    if len(inventario) == 0:
+                        print('▷ Nenhum produto cadastrado.')
+                    else:
+                        dados = atualizar_produto(inventario)
                         if dados is None:
                             continue
-                        if ';' in dados[1]:
+                        if dados[1] == 1 and ';' in dados[2]:
                             print('▷ O nome não pode conter ponto e vírgula.')
-                        elif inv.adicionar_produto(inventario, dados):
-                            print('▷ Produto cadastrado com sucesso!')
+                        elif inv.atualizar_produto(inventario, dados):
+                            print('▷ Produto atualizado com sucesso!')
                         else:
-                            print('▷ ID ou produto com mesmo nome e encantamento já cadastrado.')
+                            print('▷ Atualização recusada: produto duplicado ou inválido.')
 
-                    elif opcao == 2:
-                        if len(inventario) == 0:
-                            print('▷ Nenhum produto cadastrado.')
+                elif opcao == 4:
+                    consultar_produto(inventario)
+
+                elif opcao == 5:
+                    mostrar_produtos()
+                    inv.mostrar_produtos(inventario)
+
+                elif opcao == 6:
+                    mostrar_estatisticas()
+                    inv.mostrar_estatisticas(inventario)
+
+                elif opcao == 7:
+                    tela_alterar_login()
+                    confirmar = input('▷ Alterar credenciais? (S/N ou V para voltar): ').lower()
+                    if confirmar == 's':
+                        if alterar_login():
+                            print('▷ Credenciais alteradas com sucesso.')
                         else:
-                            codigo = remover_produto(inventario)
-                            if codigo is not None:
-                                if inv.remover_produto(inventario, codigo):
-                                    print('▷ Produto removido com sucesso!')
+                            print('▷ Alteração não realizada.')
 
-                    elif opcao == 3:
-                        if len(inventario) == 0:
-                            print('▷ Nenhum produto cadastrado.')
-                        else:
-                            dados = atualizar_produto(inventario)
-                            if dados is None:
-                                continue
-                            if dados[1] == 1 and ';' in dados[2]:
-                                print('▷ O nome não pode conter ponto e vírgula.')
-                            elif inv.atualizar_produto(inventario, dados):
-                                print('▷ Produto atualizado com sucesso!')
-                            else:
-                                print('▷ Atualização recusada: produto duplicado ou inválido.')
+                elif opcao == 8:
+                    perfil = 3
 
-                    elif opcao == 4:
-                        consultar_produto(inventario)
-
-                    elif opcao == 5:
-                        mostrar_produtos()
-                        inv.mostrar_produtos(inventario)
-
-                    elif opcao == 6:
-                        mostrar_estatisticas()
-                        inv.mostrar_estatisticas(inventario)
-
-                    elif opcao == 7:
-                        tela_alterar_login()
-                        confirmar = input('▷ Alterar credenciais? (S/N ou V para voltar): ').lower()
-                        if confirmar == 's':
-                            if alterar_login():
-                                print('▷ Credenciais alteradas com sucesso.')
-                            else:
-                                print('▷ Alteração não realizada.')
-
-                    elif opcao == 8:
-                        perfil = 3
-
-                    if opcao not in [4, 5, 8]:
-                        input('Pressione ENTER para voltar ao menu...')
+                if opcao not in [4, 5, 8]:
+                    input('Pressione ENTER para voltar ao menu...')
 
         elif perfil == 2:
             # O jogador não recebe acesso à edição de produtos
