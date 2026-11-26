@@ -186,6 +186,23 @@ def carregar_inventario(nome_arquivo="inventario.csv"):
                     print(f'▷ {nome_arquivo}, linha {numero}: produto duplicado.')
                     return None
                 inventario[codigo] = produto
+    except FileNotFoundError:
+        if nome_arquivo == "inventario.csv":
+            print('▷ O arquivo inventario.csv não foi encontrado.')
+            resposta = input('▷ Criar um inventário vazio? (S/N): ').strip().lower()
+            if resposta == 's' or resposta == 'sim':
+                try:
+                    with open(nome_arquivo, 'w', encoding='utf-8') as arquivo:
+                        pass
+                    print('▷ Inventário vazio criado com sucesso.')
+                    return {}
+                except OSError:
+                    print('▷ Não foi possível criar inventario.csv.')
+                    return None
+            print('▷ Coloque o arquivo na pasta e execute o programa novamente.')
+            return None
+        print(f'▷ Não foi possível abrir {nome_arquivo}. Confira a pasta do projeto.')
+        return None
     except OSError:
         print(f'▷ Não foi possível abrir {nome_arquivo}. Confira a pasta do projeto.')
         return None
@@ -295,11 +312,10 @@ def receber_item(inventario, produto, quantidade, disponibilidade):
         while codigo in inventario:
             codigo += 1
         inventario[codigo] = [produto[0], quantidade, produto[2], produto[3], produto[4]]
-        disponibilidade[codigo] = quantidade
+        disponibilidade[codigo] = 0
     else:
         inventario[codigo][1] += quantidade
         inventario[codigo][2] = produto[2]
-        disponibilidade[codigo] += quantidade
 
 
 def comprar_item(loja, jogador, esmeraldas, codigo, quantidade, disponibilidade):
