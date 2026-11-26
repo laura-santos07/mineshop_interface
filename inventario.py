@@ -1,5 +1,4 @@
 import busca_e_ordenacao as busca
-from pathlib import Path
 from criptografia import cifrar_cesar, chave_cesar
 
 # Manipulação do inventário em memória
