@@ -1,4 +1,6 @@
 import busca_e_ordenacao as busca
+from pathlib import Path
+from criptografia import cifrar_cesar, chave_cesar
 
 # Manipulação do inventário em memória
 
@@ -159,7 +161,8 @@ def carregar_inventario(nome_arquivo="inventario.csv"):
                 numero += 1
                 if linha.strip() == '':
                     continue
-                dados = linha.strip().split(';')
+                dados_cifrados = linha.rstrip('\r\n').split(';')
+                dados = [cifrar_cesar(campo, -chave_cesar) for campo in dados_cifrados]
                 if len(dados) != 6:
                     print(f'▷ {nome_arquivo}, linha {numero}: esperados seis campos.')
                     return None
@@ -196,8 +199,15 @@ def salvar_inventario(inventario, nome_arquivo="inventario.csv"):
     with open(nome_arquivo, 'w', encoding='utf-8') as arquivo:
         for codigo in inventario:
             produto = inventario[codigo]
-            arquivo.write(f'{codigo};{produto[0]};{produto[1]};{produto[2]};{produto[3]};{produto[4]}\n')
-
+            campos = [
+                cifrar_cesar(codigo, chave_cesar),
+                cifrar_cesar(produto[0], chave_cesar),
+                cifrar_cesar(produto[1], chave_cesar),
+                cifrar_cesar(produto[2], chave_cesar),
+                cifrar_cesar(produto[3], chave_cesar),
+                cifrar_cesar(produto[4], chave_cesar),
+            ]
+            arquivo.write(';'.join(campos) + '\n')
 
 def carregar_esmeraldas():
     try:
