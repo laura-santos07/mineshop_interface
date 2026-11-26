@@ -19,6 +19,7 @@ barra_inf = inf_esquerdo + linha + inf_direito
 barra_div = "┣" + linha + "┫"
 lateral   = "┃"
 
+# Repete a leitura até receber uma credencial não vazia ou o pedido de voltar.
 def solicitar_credencial(mensagem):
     while True:
         valor = input(mensagem)
@@ -29,6 +30,7 @@ def solicitar_credencial(mensagem):
         print('▷ O campo não pode ficar vazio.')
 
 
+# Armazena apenas os hashes, separados por ponto e vírgula, em vez das credenciais originais.
 def gravar_login(nome, senha):
     hash_nome, hash_senha = gerar_hash(nome, senha)
     # Só grava depois de preencher e confirmar todos os dados.
@@ -41,6 +43,7 @@ def gravar_login(nome, senha):
     return True
 
 
+# Solicita e confirma as novas credenciais antes de permitir a gravação.
 def novos_dados():
     print('▷ Digite V para voltar sem alterar as credenciais.')
     nome = solicitar_credencial(f"{lateral} Crie o nome de usuário ▸ ")
@@ -55,6 +58,7 @@ def novos_dados():
     return nome, senha
 
 
+# No primeiro acesso, cadastra as credenciais; nos demais, valida o arquivo e solicita o login.
 def criar_login():
     try:
         with open(login, 'r', encoding='utf-8') as arquivo:
@@ -100,6 +104,7 @@ def criar_login():
         print('▷ Usuário ou senha incorretos. Tente novamente.')
 
 
+# Confere o hash do nome e da senha informados com os valores armazenados.
 def autenticar(nome, senha):
     # Compara os hashes sem alterar o login.txt.
     hash_nome, hash_senha = gerar_hash(nome, senha)
@@ -121,6 +126,7 @@ def autenticar(nome, senha):
     return False
 
 
+# Reaproveita o cadastro de credenciais para substituir o login existente.
 def alterar_login():
     dados = novos_dados()
     if dados is None:
@@ -128,6 +134,7 @@ def alterar_login():
     return gravar_login(dados[0], dados[1])
 
 
+# O SHA-256 gera um resumo de 64 caracteres hexadecimais para cada credencial. É hashing, não criptografia reversível.
 def gerar_hash(nome, senha): #gera hashs
     hash_nome = hashlib.sha256(nome.encode("utf-8")).hexdigest()
     hash_senha = hashlib.sha256(senha.encode("utf-8")).hexdigest()
