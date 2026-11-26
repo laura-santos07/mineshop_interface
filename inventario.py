@@ -48,7 +48,9 @@ def paginar(linhas, negociacao=False, texto_escolha="Escolher item para negocia√
         return False
 
     originais = linhas
-    ordem_alfabetica = False
+    ordem_alfabetica = ordenadas is not None
+    if ordem_alfabetica:
+        linhas = ordenadas
     por_pagina = 10
     pagina = 1
     total_paginas = (len(linhas) + por_pagina - 1) // por_pagina
