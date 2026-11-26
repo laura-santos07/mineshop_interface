@@ -1,4 +1,5 @@
 # ESCOLHA DE PERFIL
+# Apresenta os perfis disponíveis antes de abrir o menu de operações.
 def menu_inicial():
     print('━' * 60)
     print('▣ BEM-VINDO AO MINESHOP')
@@ -11,6 +12,7 @@ def menu_inicial():
     print('━' * 60)
 
 
+# Limita a escolha às opções exibidas no menu inicial.
 def escolher_perfil():
     opcao = validar_itens('▷ Escolha uma opção: ')
 
@@ -22,6 +24,7 @@ def escolher_perfil():
 
 
 # MENU DO JOGADOR
+# Reúne as operações de negociação e inventário pessoal.
 def menu_jogador():
     print('━' * 60)
     print('▣ MINESHOP - JOGADOR')
@@ -38,6 +41,7 @@ def menu_jogador():
     print('━' * 60)
 
 
+# Impede a seleção de opções fora do menu do jogador.
 def escolher_opcao_jogador():
     opcao = validar_itens('▷ Escolha uma opção: ')
 
@@ -48,6 +52,7 @@ def escolher_opcao_jogador():
     return opcao
 
 
+# Solicita o ID da loja e a quantidade, permitindo cancelar antes da compra.
 def tela_comprar():
     print('━' * 60)
     print('▣ MINESHOP - COMPRAR ITEM')
@@ -62,6 +67,7 @@ def tela_comprar():
     return codigo, quantidade
 
 
+# Solicita o ID do inventário pessoal e a quantidade a vender.
 def tela_vender():
     print('━' * 60)
     print('▣ MINESHOP - VENDER ITEM')
@@ -76,12 +82,14 @@ def tela_vender():
     return codigo, quantidade
 
 
+# Identifica a tela de consulta do inventário pessoal.
 def tela_inventario_jogador():
     print('━' * 60)
     print('▣ MINESHOP - MEU INVENTÁRIO')
     print('━' * 60)
 
 
+# Exibe as operações de gerenciamento disponíveis ao Villager.
 def menu():
     print('━' * 60)
     print('▣ MENU PRINCIPAL - MINESHOP')
@@ -99,6 +107,7 @@ def menu():
     print('▷ Voltar ao início (0)')
     print('━' * 60)
 
+# Desenha o personagem no terminal sem precisar de uma interface gráfica.
 def villager():
     print('    ░░░░░░░░░░░░░░')
     print('    ░░▒▒▒▒▒▒▒▒▒▒░░')
@@ -109,6 +118,7 @@ def villager():
     print('    ░░▒▒░████░▒▒░░')
     print('    ░░▒▒░████░▒▒░░')
 
+# Valida o intervalo de opções do menu administrativo.
 def escolher_opcao():
     opcao = validar_itens('▷ Escolha uma opção: ')
 
@@ -118,6 +128,7 @@ def escolher_opcao():
 
     return opcao
 
+# Aceita inteiros não negativos e permite voltar quando a operação oferece essa opção.
 def validar_itens(mensagem, voltar=False):
     while True: # Repete a pergunta até receber um número válido
         try:
@@ -134,6 +145,7 @@ def validar_itens(mensagem, voltar=False):
         except ValueError:
             print('⚠ Erro: Insira um número inteiro válido.')
 
+# Converte as respostas de sim ou não em valores booleanos.
 def validar_compra(mensagem, voltar=False):
     while True:
         resposta = input(mensagem).strip()
@@ -149,6 +161,7 @@ def validar_compra(mensagem, voltar=False):
         else:
             print('⚠ Erro: Responda Sim ou Não.')
 
+# Recusa valores negativos ou não finitos e limita o preço a duas casas decimais.
 def validar_decimal(mensagem, voltar=False): # Valida os valores decimais dos produtos
     while True:
         try:
@@ -165,6 +178,7 @@ def validar_decimal(mensagem, voltar=False): # Valida os valores decimais dos pr
         except ValueError:
             print('⚠ Erro: Insira um número válido.')
 
+# Também impede o uso do ponto e vírgula, pois ele separa os campos no CSV.
 def validar_nome(mensagem, voltar=False): # Impede que o nome do produto fique vazio
     while True:
         nome = input(mensagem).strip()
@@ -200,6 +214,7 @@ def validar_id_existente(mensagem, inventario): # Confere se o produto existe an
         else:
             print('⚠ Erro: Produto não encontrado.')
 
+# Usa uma lista de encantamentos para apresentar escolhas padronizadas.
 def escolher_encantamento():
     encantamentos = ['Afiação', 'Proteção', 'Eficiência', 'Inquebrável',
                      'Remendo', 'Fortuna', 'Toque suave', 'Pilhagem',
@@ -223,6 +238,7 @@ def escolher_encantamento():
 
 
 # TELA PARA ADICIONAR O PRODUTO
+# Reúne os dados necessários para cadastrar um produto.
 def adicionar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ADICIONAR PRODUTO')
@@ -262,6 +278,7 @@ def adicionar_produto(inventario=None):
 
 
 # TELA PARA REMOVER O PRODUTO
+# Solicita os dados para remover um produto do estoque.
 def remover_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - REMOVER PRODUTO')
@@ -291,6 +308,7 @@ def remover_produto(inventario=None):
 
 
 # TELA PARA ATUALIZAR O PRODUTO
+# Apresenta as opções de edição e valida os novos dados.
 def atualizar_produto(inventario=None):
     print('━' * 60)
     print('▣ MINESHOP - ATUALIZAR PRODUTO')
@@ -349,6 +367,7 @@ def atualizar_produto(inventario=None):
 
 
 # TELA PARA BUSCAR O PRODUTO
+# Coleta o tipo de busca e o valor que será pesquisado.
 def buscar_produto():
     print('━' * 60)
     print('▣ MINESHOP - BUSCAR PRODUTO')
@@ -382,6 +401,7 @@ def buscar_produto():
 
 
 # TELA PARA MOSTRAR OS PRODUTOS
+# Exibe o cabeçalho da consulta de produtos.
 def mostrar_produtos():
     print('━' * 60)
     print('▣ MINESHOP - MOSTRAR PRODUTOS')
@@ -390,6 +410,7 @@ def mostrar_produtos():
     print('━' * 60)
 
 # TELA PARA ESTATÍSTICAS
+# Identifica a tela de estatísticas do estoque.
 def mostrar_estatisticas():
     print('━' * 60)
     print('▣ MINESHOP - ESTATÍSTICAS')
@@ -398,6 +419,7 @@ def mostrar_estatisticas():
     print('━' * 60)
 
 # TELA PARA ALTERAR LOGIN
+# Apresenta a opção de alteração das credenciais.
 def tela_alterar_login():
     print('━' * 60)
     print('▣ MINESHOP - ALTERAR LOGIN')
@@ -406,6 +428,7 @@ def tela_alterar_login():
     print('━' * 60)
 
 # TELA PARA SALVAR E SAIR
+# Solicita os dados do item coletado pelo jogador.
 def tela_coletar():
     print('━' * 60)
     print('▣ MINESHOP - COLETAR ITEM')
@@ -438,6 +461,7 @@ def tela_coletar():
     return [nome, quantidade, encantado, encantamento]
 
 
+# Solicita o item e a quantidade que serão retirados do inventário pessoal.
 def tela_remover_item():
     print('━' * 60)
     print('▣ MINESHOP - REMOVER ITEM DO INVENTÁRIO')
@@ -454,6 +478,7 @@ def tela_remover_item():
     return None
 
 
+# Coleta a quantidade que o jogador deseja disponibilizar para venda.
 def tela_disponibilidade():
     print('▣ MINESHOP - QUANTIDADE DISPONÍVEL PARA VENDA')
     print('▷ Digite V para voltar. Zero reserva todas as unidades.')

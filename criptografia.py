@@ -62,6 +62,7 @@
 
 chave_cesar = 7
 
+# Aplica a Cifra de César separadamente a cada campo, mantendo os caracteres fora dos grupos definidos. A chave negativa permite desfazer o deslocamento.
 def cifrar_cesar(campo, chave):
     campo = str(campo)
     resultado = ""
@@ -87,6 +88,7 @@ def cifrar_cesar(campo, chave):
             resultado += caractere
     return resultado
 
+# O resto da divisão faz o deslocamento voltar ao começo do grupo quando ultrapassa seu tamanho.
 def auxiliar(caractere, grupo, chave):
     idx = grupo.index(caractere)
     novo_idx = (idx + chave) % len(grupo)

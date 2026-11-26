@@ -3,6 +3,7 @@ from criptografia import cifrar_cesar, chave_cesar
 
 # Manipulação do inventário em memória
 
+# Insere o registro no dicionário, utilizando o ID como chave.
 def adicionar_produto(inventario, dados):
     codigo = dados[0]
     if codigo in inventario:
@@ -14,6 +15,7 @@ def adicionar_produto(inventario, dados):
     return True
 
 
+# Retira o produto do dicionário pelo seu código.
 def remover_produto(inventario, codigo):
     if codigo in inventario:
         del inventario[codigo]
@@ -21,6 +23,7 @@ def remover_produto(inventario, codigo):
     return False
 
 
+# Altera os dados do registro em memória.
 def atualizar_produto(inventario, dados):
     codigo = dados[0]
     campo = dados[1]
@@ -41,6 +44,7 @@ def atualizar_produto(inventario, dados):
 
 
 # Exibe listas em páginas de 10 registros.
+# Divide a consulta em páginas para facilitar a leitura no terminal.
 def paginar(linhas, negociacao=False, texto_escolha="Escolher item para negociação", ordenadas=None):
     if len(linhas) == 0:
         print('Nenhum produto cadastrado.')
@@ -117,6 +121,7 @@ def paginar(linhas, negociacao=False, texto_escolha="Escolher item para negocia�
             print('Opção inválida.')
 
 
+# Organiza os campos do produto para exibição no terminal.
 def formatar_produto(codigo, produto):
     encantamento = produto[4]
     if encantamento == "":
@@ -124,6 +129,7 @@ def formatar_produto(codigo, produto):
     return f'ID: {codigo} | Nome: {produto[0]} | Quantidade: {produto[1]} | Preço: {produto[2]:.2f} | Encantado: {produto[3]} | Encantamento: {encantamento}'
 
 
+# Prepara a listagem de produtos em ordem de nome e encaminha para a paginação.
 def mostrar_produtos(inventario, negociacao=False, texto_escolha="Escolher item para negociação", disponibilidade=None):
     linhas = []
     linhas_ordenadas = []
@@ -140,6 +146,7 @@ def mostrar_produtos(inventario, negociacao=False, texto_escolha="Escolher item 
     return paginar(linhas, negociacao, texto_escolha, linhas_ordenadas)
 
 
+# Calcula os indicadores do estoque a partir dos registros em memória.
 def mostrar_estatisticas(inventario):
     total = 0
     quantidade = 0
@@ -153,6 +160,7 @@ def mostrar_estatisticas(inventario):
 
 
 # Carrega os dados para um dicionário. None indica erro de leitura.
+# Separa os campos do CSV, decifra cada um e valida os dados antes de montar o dicionário.
 def carregar_inventario(nome_arquivo="inventario.csv"):
     inventario = {}
     numero = 0
@@ -213,6 +221,7 @@ def carregar_inventario(nome_arquivo="inventario.csv"):
     return inventario
 
 
+# Cifra os campos individualmente e mantém o ponto e vírgula como separador no arquivo.
 def salvar_inventario(inventario, nome_arquivo="inventario.csv"):
     with open(nome_arquivo, 'w', encoding='utf-8') as arquivo:
         for codigo in inventario:
@@ -227,6 +236,7 @@ def salvar_inventario(inventario, nome_arquivo="inventario.csv"):
             ]
             arquivo.write(';'.join(campos) + '\n')
 
+# Lê o saldo salvo e confere se representa um valor monetário válido.
 def carregar_esmeraldas():
     try:
         with open('esmeraldas.txt', 'r', encoding='utf-8') as arquivo:
@@ -243,12 +253,14 @@ def carregar_esmeraldas():
     return None
 
 
+# Grava o saldo com duas casas decimais.
 def salvar_esmeraldas(esmeraldas):
     with open('esmeraldas.txt', 'w', encoding='utf-8') as arquivo:
         arquivo.write(f'{esmeraldas:.2f}\n')
 
 
 # Dicionário separado: ID do item e quantidade disponível para venda.
+# Confere se a quantidade à venda corresponde a um item existente e não excede o estoque pessoal.
 def carregar_disponibilidade(jogador):
     disponibilidade = {}
     numero = 0
@@ -280,12 +292,14 @@ def carregar_disponibilidade(jogador):
     return disponibilidade
 
 
+# Persiste a relação entre ID do item e quantidade oferecida para venda.
 def salvar_disponibilidade(disponibilidade):
     with open('disponibilidade_jogador.csv', 'w', encoding='utf-8') as arquivo:
         for codigo in disponibilidade:
             arquivo.write(f'{codigo};{disponibilidade[codigo]}\n')
 
 
+# Limita a oferta à quantidade que o jogador realmente possui.
 def definir_disponibilidade(jogador, disponibilidade, codigo, quantidade):
     if codigo not in jogador or quantidade < 0 or quantidade > jogador[codigo][1]:
         return 'ID ou quantidade disponível inválida.'
@@ -298,6 +312,7 @@ def mesmo_item(item, produto):
     return item[0].strip().lower() == produto[0].strip().lower() and item[3] == produto[3] and item[4].strip().lower() == produto[4].strip().lower()
 
 
+# Percorre o inventário procurando uma variante equivalente do produto.
 def encontrar_item(inventario, produto):
     for codigo in inventario:
         item = inventario[codigo]
@@ -306,6 +321,7 @@ def encontrar_item(inventario, produto):
     return None
 
 
+# Soma a quantidade a um item existente ou cria um registro com um ID livre.
 def receber_item(inventario, produto, quantidade, disponibilidade):
     codigo = encontrar_item(inventario, produto)
     if codigo is None:
@@ -319,6 +335,7 @@ def receber_item(inventario, produto, quantidade, disponibilidade):
         inventario[codigo][2] = produto[2]
 
 
+# Verifica estoque e saldo antes de transferir o item e descontar as esmeraldas.
 def comprar_item(loja, jogador, esmeraldas, codigo, quantidade, disponibilidade):
     if codigo not in loja or quantidade <= 0:
         return esmeraldas, 'Produto ou quantidade inválida.'
@@ -333,6 +350,7 @@ def comprar_item(loja, jogador, esmeraldas, codigo, quantidade, disponibilidade)
     return round(esmeraldas - custo, 2), 'Compra realizada com sucesso!'
 
 
+# Valida a oferta e transfere a quantidade para a loja, creditando o jogador.
 def vender_item(loja, jogador, esmeraldas, codigo, quantidade, disponibilidade):
     if codigo not in jogador or quantidade <= 0:
         return esmeraldas, 'Produto ou quantidade inválida.'
@@ -356,6 +374,7 @@ def vender_item(loja, jogador, esmeraldas, codigo, quantidade, disponibilidade):
 
 
 # Cadastra um item no inventário pessoal, mesmo sem oferta na loja.
+# Usa o preço da loja quando há uma oferta equivalente ao item coletado.
 def coletar_item(loja, jogador, dados, disponibilidade):
     nome = dados[0]
     quantidade = dados[1]
@@ -375,6 +394,7 @@ def coletar_item(loja, jogador, dados, disponibilidade):
 
 
 # Mantém o preço exibido no inventário pessoal igual ao preço da loja.
+# Sincroniza o preço de referência com a oferta atual da loja.
 def atualizar_precos_jogador(loja, jogador):
     for codigo in jogador:
         codigo_loja = encontrar_item(loja, jogador[codigo])
@@ -385,6 +405,7 @@ def atualizar_precos_jogador(loja, jogador):
 
 
 # Exibe o preço vigente e informa quais itens podem ser vendidos.
+# Prepara a consulta dos itens pessoais com a situação de venda.
 def mostrar_itens_venda(loja, jogador, disponibilidade):
     linhas = []
     for codigo in jogador:
@@ -399,6 +420,7 @@ def mostrar_itens_venda(loja, jogador, disponibilidade):
     return paginar(linhas, True)
 
 
+# Ajusta a quantidade disponível após a remoção e elimina o registro quando não restam unidades.
 def remover_item_jogador(jogador, codigo, quantidade, disponibilidade):
     if codigo not in jogador or quantidade <= 0:
         return 'Produto ou quantidade inválida.'

@@ -9,6 +9,7 @@ import busca_e_ordenacao as busca
 import inventario as inv
 
 
+# Recebe os critérios de busca e reorganiza os resultados em um dicionário para reutilizar a listagem.
 def consultar_produto(inventario):
     dados = buscar_produto()
     if dados is None:
@@ -24,6 +25,7 @@ def consultar_produto(inventario):
     inv.mostrar_produtos(encontrados)
 
 
+# Coordena a autenticação, a troca de perfis, as operações em memória e a gravação ao sair.
 def executar():
     perfil = 0
     inventario = None
