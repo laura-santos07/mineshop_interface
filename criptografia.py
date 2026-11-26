@@ -60,7 +60,7 @@
 
 # print("Texto cifrado:", resultado)
 
-chave_cesar = 10
+chave_cesar = 7
 
 def cifrar_cesar(campo, chave):
     campo = str(campo)
@@ -68,6 +68,7 @@ def cifrar_cesar(campo, chave):
 
     minusculas = "abcdefghijklmnopqrstuvwxyz"
     maiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    digitos = "0123456789"
     acentos_min = "áàâãéêíóôõúç"
     acentos_mai = "ÁÀÂÃÉÊÍÓÔÕÚÇ"
 
@@ -76,6 +77,8 @@ def cifrar_cesar(campo, chave):
             resultado += auxiliar(caractere, minusculas , chave)
         elif caractere in maiusculas:
             resultado += auxiliar(caractere, maiusculas, chave)
+        elif caractere in digitos:
+            resultado += auxiliar(caractere, digitos, chave)
         elif caractere in acentos_min:
             resultado += auxiliar(caractere, acentos_min, chave)
         elif caractere in acentos_mai:
