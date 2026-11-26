@@ -82,7 +82,7 @@ def criar_login():
                     return False
     while True:
         print(barra_sup)
-        print('▷ Login do Villager - Administrador (V para voltar)')
+        print('▷ Login do Mineshop (V para voltar)')
         print(barra_div)
         nome_usuario = solicitar_credencial(f"{lateral} Digite seu nome de usuário ▸ ")
         if nome_usuario is None:
